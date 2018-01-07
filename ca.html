@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cellular Automaton</title>
+    <script type="text/javascript" src="d3/d3.js"></script>
+    <style type="text/css">
+
+      rect {
+      stroke: #777;
+      stroke-width: 0.5px;
+      }
+
+    </style>
+  </head>
+  
+  <body>
+
+    <p>
+      <label for="rule" 
+             style="display: inline-block; text-align: left">
+        Rule = 
+      </label>
+      <input type="number" min="0" max="255" step="1" id="rule">
+    </p>
+
+    <script type="text/javascript" src="ca.js"></script>
+    <script type="text/javascript" src="ca_run.js"></script>
+  </body>
+</html>
