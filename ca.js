@@ -1,3 +1,4 @@
+// 1次元セルオートマトンを扱うクラス
 var CellularAutomaton = function(initCells, rule) {
 
     // 初期化
@@ -12,7 +13,6 @@ var CellularAutomaton = function(initCells, rule) {
 
     // this.cellsをもとに次のステップにおけるcellを生成
     this.update = function() {
-	
 	this.cells = new Array(this.length).fill(0).map(function(d, i) {
 	    neighborCode =
 		4 * this.cells[this.index(i-1)] +
@@ -20,7 +20,5 @@ var CellularAutomaton = function(initCells, rule) {
 		1 * this.cells[this.index(i+1)];
 	    return Math.floor(this.rule / 2**neighborCode) % 2;
 	}, this);
-	
-	return this.cells;
     }
 }
