@@ -16,7 +16,7 @@ var GameOfLife = function(initCells, rule={"survival": [2,3], "birth": [3]}) {
     // this.cellsをもとに次のステップにおけるcellを生成
     this.update = function() {
 	this.cells = this.cells.map(function(row, i) {
-	    return row.map(function(_, j) {
+	    return row.map(function(cell, j) {
 		// (i, j)の周囲8近傍のindexたち
 		neighbors = [[i-1, j-1], [i-1, j], [i-1, j+1],
 			     [i  , j-1],           [i  , j+1],
@@ -30,7 +30,7 @@ var GameOfLife = function(initCells, rule={"survival": [2,3], "birth": [3]}) {
 		// 環境に応じて誕生/生存/死滅
 		if (this.rule.birth.indexOf(count) >= 0)
 		    return 1; // 誕生
-		if ( (this.cells[i][j]==1) && (this.rule.survival.indexOf(count)>=0) )
+		if ( (cell==1) && (this.rule.survival.indexOf(count)>=0) )
 		    return 1; // 生存
 		return 0; // 死滅
 
