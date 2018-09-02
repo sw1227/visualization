@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Conway's Game of Life
+{% endblock %}
+
+{% block content %}
+<div class="card card-body">
+
+  <p class="step"> step = 0 </p>
+  <svg id="svg-lifegame"></svg>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/lifegame.js')}}" type="text/javascript"></script>
+<script src="{{ url_for('static', filename='js/lifegame_run.js')}}" type="text/javascript"></script>
+<script>
+ // Activate selected <li> in sidebar
+ window.onload = () => {
+     $("ul.nav").find("li.active").removeClass("active");
+     $("li#li-lifegame").addClass('active');
+ }
+</script>
+
+<style>
+ rect {
+     stroke: #aaa;
+     stroke-width: 0.5px;
+ }
+</style>
+
+{% endblock %}

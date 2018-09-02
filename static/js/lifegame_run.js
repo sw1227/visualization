@@ -1,6 +1,6 @@
 var margin = {top: 20, right: 20, bottom: 20, left: 20};
-var width = 600 - margin.left - margin.right;
-var height = 600 - margin.top - margin.bottom;
+var width = 500 - margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
 
 var shape = [20, 20];// 行数・列数
 var rectSize = Math.min(height/shape[0], width/shape[1]);// セルは領域に収まる正方形にする
@@ -34,7 +34,7 @@ var initCells = createInitCells(RPentomino, 10, 10);
 // ライフゲームの作成：定義はlifegame.js
 var lifegame = new GameOfLife(initCells);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("svg#svg-lifegame")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
