@@ -85,33 +85,24 @@ Road Direction
      var ys = d3.range(bounds.northEast.y, bounds.southWest.y+1);
 
      // Get all vector tiles asynchronously
-     var q = d3.queue();
      d3.cross(xs, ys).forEach(c => {
-         q.defer((callback) => {
-             d3.json("{{ url_for('road_geojson') }}"+`?x=${c[0]}&y=${c[1]}`, (error, data) => {
-                 if (error) throw error;
-                 // Draw GeoJSON layer on map
-                 var layer = L.geoJSON(data);
-                 roadLayers.push(layer);
-                 layer.addTo(leafletMap);
-                 // Calculate direction of path
-                 data.features.forEach(f => {
-                     var coords = f.geometry.coordinates;
-                     for (var i=0; i<coords.length-1; i++) {
-                         // symmetry
-                         directions.push(direction(coords[i], coords[i+1]));
-                         directions.push(direction(coords[i+1], coords[i]));
-                     }
-                 });
-                 callback(null);
+         d3.json("{{ url_for('road_geojson') }}"+`?x=${c[0]}&y=${c[1]}`, (error, data) => {
+             if (error) throw error;
+             // Draw GeoJSON layer on map
+             var layer = L.geoJSON(data);
+             roadLayers.push(layer);
+             layer.addTo(leafletMap);
+             // Calculate direction of path
+             data.features.forEach(f => {
+                 var coords = f.geometry.coordinates;
+                 for (var i=0; i<coords.length-1; i++) {
+                     // symmetry
+                     directions.push(direction(coords[i], coords[i+1]));
+                     directions.push(direction(coords[i+1], coords[i]));
+                 }
              });
+             updateHist(directions);
          });
-     });
-
-     // Draw Histogram after all tiles have fetched
-     q.await((error) => {
-         if (error) throw error;
-         updateHist(directions);
      });
  }
 
