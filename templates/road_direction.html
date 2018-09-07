@@ -1,0 +1,193 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Road Direction
+{% endblock %}
+
+{% block content %}
+
+<div class="card card-body">
+
+  <div class="row">
+
+    <div class="col-md-6 col-sm-6">
+      <div id="mapid"></div>
+    </div>
+
+    <div class="col-md-6 col-sm-6">
+      <h5>Road Direction Histogram</h5>
+      <button type="button" class="btn btn-primary" onclick="getRoadTiles()">Draw Histogram</button>
+      <button type="button" class="btn btn-default" onclick="refresh()">Refresh</button>
+      <svg id="svg-road_direction"></svg>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+ // Reference
+ //  - https://blog.mapbox.com/visualizing-street-orientations-on-an-interactive-map-1eefa6002afc
+
+ // ----- Variables -----
+ var leafletMap;
+ var roadLayers = [];
+ var directions = [];
+ const histSplit = 24;
+ const maxRadius = 150;
+
+
+ // ----- Functions -----
+
+ // Get tile coordinates from latitude, longitude and zoom
+ function getTileCoords(lat, lon, zoom) {
+     var xTile = parseInt(Math.floor( (lon + 180) / 360 * (1<<zoom) ));
+     var yTile = parseInt(Math.floor( (1 - Math.log(Math.tan(lat*Math.PI/180) + 1 / Math.cos(lat*Math.PI/180)) / Math.PI) / 2 * (1<<zoom) ));
+     return {"z": zoom, "x": xTile, "y": yTile}
+ }
+
+
+ // Get bounding box of tile coordinates in the current view
+ function getCurrentBounds() {
+     var zoom = leafletMap.getZoom();
+     var bounds = leafletMap.getBounds();
+     return {
+         "northEast": getTileCoords(bounds._northEast.lat, bounds._northEast.lng, zoom),
+         "southWest": getTileCoords(bounds._southWest.lat, bounds._southWest.lng, zoom)
+     };
+ }
+
+
+ // Direction of vector p2-p1
+ function direction(p1, p2) {
+     return Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
+ }
+
+
+ // Refresh map and graph
+ function refresh() {
+     // remove road layers
+     roadLayers.forEach(l => leafletMap.removeLayer(l));
+
+     // refresh histogram
+     directions = [];
+     updateHist([]);
+ }
+
+
+ // Get all road GeoJSONs in the current bounding box
+ // TODO: onMove, length-based histogram, zoom support
+ function getRoadTiles() {
+     // Tile coordinate in the current view
+     var bounds = getCurrentBounds();
+     var xs = d3.range(bounds.southWest.x, bounds.northEast.x+1);
+     var ys = d3.range(bounds.northEast.y, bounds.southWest.y+1);
+
+     // Get all vector tiles asynchronously
+     var q = d3.queue();
+     d3.cross(xs, ys).forEach(c => {
+         q.defer((callback) => {
+             d3.json("{{ url_for('road_geojson') }}"+`?x=${c[0]}&y=${c[1]}`, (error, data) => {
+                 if (error) throw error;
+                 // Draw GeoJSON layer on map
+                 var layer = L.geoJSON(data);
+                 roadLayers.push(layer);
+                 layer.addTo(leafletMap);
+                 // Calculate direction of path
+                 data.features.forEach(f => {
+                     var coords = f.geometry.coordinates;
+                     for (var i=0; i<coords.length-1; i++) {
+                         // symmetry
+                         directions.push(direction(coords[i], coords[i+1]));
+                         directions.push(direction(coords[i+1], coords[i]));
+                     }
+                 });
+                 callback(null);
+             });
+         });
+     });
+
+     // Draw Histogram after all tiles have fetched
+     q.await((error) => {
+         if (error) throw error;
+         updateHist(directions);
+     });
+ }
+
+
+ function drawHist(data) {
+     // draw
+     var margin = {top: 20, right: 20, bottom: 20, left: 20};
+     var width = 400 - margin.left - margin.right;
+     var height = 400 - margin.top - margin.bottom;
+
+     var svg = d3.select("#svg-road_direction")
+       .attr("width", width + margin.left + margin.right)
+       .attr("height", height + margin.top + margin.bottom)
+     .append("g")
+       .attr("transform", `translate(${margin.left+width/2}, ${margin.top+height/2})`);
+
+     svg.append("circle")
+        .attr("cx", 0).attr("cy", 0)
+        .attr("r", maxRadius);
+
+     updateHist(data);
+ }
+
+ function updateHist(data) {
+     var histogram = d3.histogram()
+                       .value(d => d)
+                       .domain([-Math.PI, Math.PI])
+                       .thresholds(d3.range(-Math.PI, Math.PI, Math.PI/histSplit));
+     var bins = histogram(data)
+
+     var rScale = d3.scaleLinear()
+                    .domain([0, d3.max(bins.map(x => x.length))])
+                    .range([0, maxRadius]);
+
+     var arc = d3.arc()
+                 .innerRadius(0).outerRadius(d => rScale(d.length))
+                 .startAngle(d => Math.PI/2 - d.x0)
+                 .endAngle(  d => Math.PI/2 - d.x1);
+
+     var path = d3.select("#svg-road_direction g")
+                  .selectAll("path")
+                  .data(bins);
+     path.enter().append("path")
+         .merge(path)
+         .attr("d", arc)
+         .attr("fill", (d, i) =>  d3.interpolateRainbow(i / histSplit));
+ }
+
+
+ window.onload = () => {
+     // Activate selected <li> in sidebar
+     $("ul.nav").find("li.active").removeClass("active");
+     $("li#li-road_direction").addClass('active');
+
+     // Initialize map
+     leafletMap = L.map('mapid').setView([35.691167, 139.767052], 16);
+     L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png", {
+         attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">地理院タイル</a>'
+     }).addTo(leafletMap);
+
+     // Empty Histogram
+     drawHist([]);
+ }
+
+</script>
+
+
+<style>
+ #mapid {
+     height: 600px;
+ }
+ circle {
+     stroke: #777;
+     stroke-width: 1;
+     fill: none;
+ }
+</style>
+
+{% endblock %}
