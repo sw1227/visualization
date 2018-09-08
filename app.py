@@ -51,3 +51,9 @@ def lsystem():
 def inversion():
     """ Circle inversion """
     return render_template("inversion.html")
+
+
+@app.route("/complex")
+def complex():
+    """ Domain coloring of complex function """
+    return render_template("complex.html")
