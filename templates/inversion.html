@@ -6,10 +6,9 @@ Circle Inversion
 
 {% block content %}
 
-<div class="card card-body">
-  <div align="center">
-    <canvas id="inversion-canvas"></canvas>
-  </div>
+
+<div align="center">
+  <div id="inversion-canvas"></div>
 </div>
 
 <script src="{{ url_for('static', filename='js/util.js')}}" type="text/javascript"></script>
@@ -50,10 +49,15 @@ Circle Inversion
 
      // Draw inverted lattice
      var invert = circleInverter(0, 0, 1); // inversion by unit circle
-     const size = 500;
-     var invertedLattice = d3.cross(d3.range(-1, 1, 2/size), d3.range(-1, 1, 2/size))
-                             .map(coord => latticeProximity(...invert(...coord)));
-     imshow("inversion-canvas", invertedLattice, d3.interpolatePuBu);
+     const resolution = 1200; // # of pixels
+     const range = 1.2; // drawing range
+
+     var invertedLattice = d3.cross(
+         d3.range(-range, range, 2*range/resolution),
+         d3.range(-range, range, 2*range/resolution)
+     ).map(coord => latticeProximity(...invert(...coord)));
+
+     imshow("inversion-canvas", invertedLattice, 600, d3.interpolatePuBu);
  }
 
 </script>

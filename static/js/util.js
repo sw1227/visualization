@@ -1,13 +1,18 @@
 // Draw square image based on pixel array and color interpolater
-function imshow(elementId, pixels, interpolate=d3.interpolateViridis) {
-    var element = document.getElementById(elementId);
-    var size = Math.sqrt(pixels.length);
-    element.setAttribute("width", size);
-    element.setAttribute("height", size);
-    var context = element.getContext("2d");
-    var imageData = context.createImageData(size, size);
+function imshow(elementId, array, size, interpolate=d3.interpolateViridis) {
+    var parent = d3.select(`#${elementId}`)
+	.attr("class", "card")
+	.attr("style", `width: ${size}px; height: ${size}px;`);
+    var canvas = parent.append("canvas")
+	.attr("class", "card-img");
 
-    pixels.forEach((d, i) => {
+    var resolution = Math.sqrt(array.length);
+    canvas.attr("width", resolution).attr("height", resolution);
+
+    var context = canvas.node().getContext("2d");
+    var imageData = context.createImageData(resolution, resolution);
+
+    array.forEach((d, i) => {
         var color = isNaN(d) ? {"r": 0, "g": 0, "b": 0} : d3.color(interpolate(d));
         imageData.data[i*4  ] = color.r;
         imageData.data[i*4+1] = color.g;
