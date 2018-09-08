@@ -36,6 +36,12 @@ Circle Inversion
  }
 
 
+ // (x, y) => 0 or 1
+ function checkerBoard(x, y) {
+     return Math.abs(Math.abs(Math.floor(x) % 2) - Math.abs(Math.floor(y) % 2))
+ }
+
+
  // Draw square image based on pixel array and color interpolater
  function imshow(elementId, pixels, interpolate=d3.interpolateViridis) {
      var element = document.getElementById(elementId)
