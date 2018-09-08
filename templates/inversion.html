@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Circle Inversion
+{% endblock %}
+
+{% block content %}
+
+<div class="card card-body">
+  <div align="center">
+    <canvas id="inversion-canvas"></canvas>
+  </div>
+</div>
+
+<script>
+
+ // Returns a inversion function
+ function circleInverter(cx, cy, r) {
+     return (x, y) => {
+         var inverse_x = cx + r**2 * (x - cx) / ((x - cx)**2 + (y - cy)**2);
+         var inverse_y = cy + r**2 * (y - cy) / ((x - cx)**2 + (y - cy)**2);
+         return [inverse_x, inverse_y];
+     }
+ }
+
+
+ // Calculate proximity to lattice
+ function latticeProximity(x, y, alpha=0.01) {
+     // alpha: prevent divergence of log - the smaller the sharper
+     var dx = - Math.log(alpha + Math.abs(x - Math.round(x)));
+     var dy = - Math.log(alpha + Math.abs(y - Math.round(y)));
+     // Normalize
+     const minVal = - 2 * Math.log(alpha + 0.5);
+     const maxVal = - 2 * Math.log(alpha);
+     return (dx + dy - minVal) / (maxVal - minVal); // range [0, 1]
+ }
+
+
+ // Draw square image based on pixel array and color interpolater
+ function imshow(elementId, pixels, interpolate=d3.interpolateViridis) {
+     var element = document.getElementById(elementId)
+     var size = Math.sqrt(pixels.length);
+     element.setAttribute("width", size);
+     element.setAttribute("height", size);
+     var context = element.getContext("2d");
+     var imageData = context.createImageData(size, size);
+
+     pixels.forEach((d, i) => {
+         var color = isNaN(d) ? {"r": 0, "g": 0, "b": 0} : d3.color(interpolate(d));
+         imageData.data[i*4  ] = color.r;
+         imageData.data[i*4+1] = color.g;
+         imageData.data[i*4+2] = color.b;
+         imageData.data[i*4+3] = 255;
+     });
+     context.putImageData(imageData, 0, 0);
+ }
+
+
+ window.onload = () => {
+     // Activate selected <li> in sidebar
+     $("ul.nav").find("li.active").removeClass("active");
+     $("li#li-inversion").addClass("active");
+
+     // Draw inverted lattice
+     var invert = circleInverter(0, 0, 1); // inversion by unit circle
+     const size = 500;
+     var invertedLattice = d3.cross(d3.range(-1, 1, 2/size), d3.range(-1, 1, 2/size))
+                             .map(coord => latticeProximity(...invert(...coord)));
+     imshow("inversion-canvas", invertedLattice, d3.interpolatePuBu);
+ }
+
+</script>
+
+
+{% endblock %}

@@ -45,3 +45,9 @@ def road_geojson():
 def lsystem():
     """ L-system """
     return render_template("lsystem.html")
+
+
+@app.route("/inversion")
+def inversion():
+    """ Circle inversion """
+    return render_template("inversion.html")
