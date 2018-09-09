@@ -24,24 +24,6 @@ Circle Inversion
  }
 
 
- // Calculate proximity to lattice
- function latticeProximity(x, y, alpha=0.01) {
-     // alpha: prevent divergence of log - the smaller the sharper
-     var dx = - Math.log(alpha + Math.abs(x - Math.round(x)));
-     var dy = - Math.log(alpha + Math.abs(y - Math.round(y)));
-     // Normalize
-     const minVal = - 2 * Math.log(alpha + 0.5);
-     const maxVal = - 2 * Math.log(alpha);
-     return (dx + dy - minVal) / (maxVal - minVal); // range [0, 1]
- }
-
-
- // (x, y) => 0 or 1
- function checkerBoard(x, y) {
-     return Math.abs(Math.abs(Math.floor(x) % 2) - Math.abs(Math.floor(y) % 2))
- }
-
-
  window.onload = () => {
      // Activate selected <li> in sidebar
      $("ul.nav").find("li.active").removeClass("active");
