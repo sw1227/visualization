@@ -6,13 +6,46 @@ Circle Inversion
 
 {% block content %}
 
+<div class="row">
 
-<div align="center">
-  <div id="inversion-canvas"></div>
+  <div class="col-md-9 col-sm-9">
+    <div align="center">
+      <div id="inversion-canvas"></div>
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-3" id="dropdown-col">
+    <!-- Generate -->
+  </div>
+
 </div>
+
 
 <script src="{{ url_for('static', filename='js/util.js')}}" type="text/javascript"></script>
 <script>
+
+ // Current visualization state
+ var colorScale = d3.interpolatePuBu;
+ var method = latticeProximity;
+
+
+ // Generate Dropdowns
+ var scales = [
+     {"text": "Blue-Green", "callback": "updateInverted(d3.interpolateBuGn, method)"},
+     {"text": "Purple-Blue", "callback": "updateInverted(d3.interpolatePuBu, method)"},
+     {"text": "Viridis", "callback": "updateInverted(d3.interpolateViridis, method)"},
+     {"text": "Inferno", "callback": "updateInverted(d3.interpolateInferno, method)"},
+     {"text": "Warm", "callback": "updateInverted(d3.interpolateWarm, method)"},
+     {"text": "Cool", "callback": "updateInverted(d3.interpolateCool, method)"},
+     {"text": "Rainbow", "callback": "updateInverted(d3.interpolateSinebow, method)"}
+ ];
+ var methods = [
+     {"text": "Lattice", "callback": "updateInverted(colorScale, latticeProximity)"},
+     {"text": "Checkerboard", "callback": "updateInverted(colorScale, checkerBoard)"}
+ ];
+ generateDropdown(scales, "dropdown-col", "Color scale");
+ generateDropdown(methods, "dropdown-col", "Method");
+
 
  // Returns a inversion function
  function circleInverter(cx, cy, r) {
@@ -24,25 +57,43 @@ Circle Inversion
  }
 
 
+ // Draw inverted space on cavas
+ function drawInverted(colorScale, method) {
+     const resolution = 1200; // # of pixels
+     const range = 1.2; // drawing range
+     var invert = circleInverter(0, 0, 1); // inversion by unit circle
+
+     var invertedLattice = d3.cross(
+         d3.range(-range, range, 2*range/resolution),
+         d3.range(-range, range, 2*range/resolution)
+     ).map(coord => method(...invert(...coord)));
+
+     imshow("inversion-canvas", invertedLattice, 600, colorScale);
+ }
+
+
+ // Update view and state
+ function updateInverted(c, m) {
+     drawInverted(c, m); // update view
+     [colorScale, method]  = [c, m]; // update global variable
+ }
+
+
  window.onload = () => {
      // Activate selected <li> in sidebar
      $("ul.nav").find("li.active").removeClass("active");
      $("li#li-inversion").addClass("active");
 
-     // Draw inverted lattice
-     var invert = circleInverter(0, 0, 1); // inversion by unit circle
-     const resolution = 1200; // # of pixels
-     const range = 1.2; // drawing range
-
-     var invertedLattice = d3.cross(
-         d3.range(-range, range, 2*range/resolution),
-         d3.range(-range, range, 2*range/resolution)
-     ).map(coord => latticeProximity(...invert(...coord)));
-
-     imshow("inversion-canvas", invertedLattice, 600, d3.interpolatePuBu);
+     drawInverted(colorScale, method);
  }
 
 </script>
 
+
+<style>
+ button {
+     width: 100%;
+ }
+</style>
 
 {% endblock %}
