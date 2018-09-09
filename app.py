@@ -57,3 +57,9 @@ def inversion():
 def complex():
     """ Domain coloring of complex function """
     return render_template("complex.html")
+
+
+@app.route("/harmonograph")
+def harmonograph():
+    """ Harmonograph """
+    return render_template("harmonograph.html")

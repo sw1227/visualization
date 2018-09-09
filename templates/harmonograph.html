@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Harmonograph
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-9 col-sm-9">
+    <div align="center" id="svg-harmonograph" >
+      <!-- svg -->
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-3" id="dropdown-col">
+    <!-- TODO: dropdown -->
+  </div>
+
+</div>
+
+
+<script>
+
+ // Calculate the position of pendulum at time [msec]
+ function harmonograph(time) {
+     const r = 250; // maximum radis
+     const d = 0.0001; // dumping
+     const f = 2; // frequency [Hz]
+     const cent = 38; // frequency ratio = 2 ^ (cent/1200)
+     return [
+         r * math.exp(-d*time) * math.sin(math.pow(2, cent/1200) * 2*math.PI*f* time/1000),
+         r * math.exp(-d*time) * math.sin(2*math.PI*f* time/1000)
+     ];
+ }
+
+
+ // Harmonograph animation
+ function drawHarmonograph() {
+     // no margin
+     const width = 600;
+     const height = 600;
+
+     var svg = d3.select("#svg-harmonograph")
+                 .attr("class", "card")
+                 .attr("style", `width: ${width}px; height: ${height}px;`)
+               .append("svg")
+                 .attr("class", "card-img")
+                 .attr("width", width)
+                 .attr("height", height)
+               .append("g")
+                 .attr("transform", `translate(${width/2}, ${height/2})`);
+
+     var trajectory = [];
+     var curve = d3.line().curve(d3.curveCatmullRom.alpha(0.5)); // trajectory => SVG path's "d"
+     var path = svg.append("path").datum(trajectory).attr("d", curve);
+
+     const maxSec = 100;
+     var timer = d3.interval((t) => {
+         trajectory.push(harmonograph(t)); // t: msec
+         path.datum(trajectory).attr("d", curve);
+         if (t > 1000*maxSec) { timer.stop(); };
+     }, 1);
+ }
+
+ window.onload = () => {
+     // Activate selected <li> in sidebar
+     $("ul.nav").find("li.active").removeClass("active");
+     $("li#li-harmonograph").addClass("active");
+
+     // Draw Harmonograph
+     drawHarmonograph();
+ }
+
+</script>
+
+
+<style>
+ path {
+     stroke: #66a;
+     stroke-width: 1;
+     fill: none;
+ }
+</style>
+
+{% endblock %}
