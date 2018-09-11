@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Kuramoto model simulation
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-9 col-sm-9">
+    <div id="svg-kuramoto">
+      <!-- svg -->
+    </div>
+  </div>
+
+  <div class="col-md-3 col-sm-3" id="dropdown-col">
+    <!-- TODO: dropdown -->
+  </div>
+
+</div>
+
+
+<script>
+
+ // Define Kuramoto model
+ var Kuramoto = function(size, k, dt) {
+     // Initialize
+     this.size = size; // # of oscillators = size * size
+     this.k = k; // coupling
+     this.dt = dt;
+     this.data = new Array(this.size).fill(0).map(() => 
+         new Array(this.size).fill(0).map(() => (
+             {"theta": 2*math.PI*math.random(), "freq": 50 + 5*math.random()}
+         ))
+     );
+
+     // Update data
+     this.update = function() {
+         this.data = this.data.map(row => row.map(d => {
+             // Flatten and get reduce sum
+             var interaction = [].concat.apply([], this.data).reduce(
+                 (acc, r) => (acc + math.sin(r.theta - d.theta)),
+                 0
+             );
+             return {
+                 "theta": d.theta + this.dt * (d.freq + (this.k / this.size**2) * interaction),
+                 "freq": d.freq
+             };
+         }));
+     };
+ };
+
+
+ function animateKuramoto(kuramoto, colorScale, maxSec=20, outerWidth=600, outerHeight=600) {
+     const margin = {top: 0, right: 0, bottom: 0, left: 0};
+     const width = outerWidth - margin.left - margin.right;
+     const height = outerHeight - margin.top - margin.bottom;
+     var svg = d3.select("#svg-kuramoto")
+                 .attr("class", "card")
+                 .attr("style", `width: ${outerWidth}px; height: ${outerHeight}px;`)
+               .append("svg")
+                 .attr("class", "card-img")
+                 .attr("width", outerWidth)
+                 .attr("height", outerHeight)
+               .append("g")
+                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+     // Draw Initial State
+     const rectSize = Math.min(width / kuramoto.size, height / kuramoto.size);
+     svg.selectAll("g.row")
+        .data(kuramoto.data)
+      .enter().append("g")
+        .attr("class", "row")
+        .attr("transform", (d, i) => ("translate(0," + i*rectSize + ")"))
+        .selectAll("rect")
+        .data(d => d)
+      .enter().append("rect")
+        .attr("x", (d, i) => i*rectSize)
+        .attr("width", rectSize)
+        .attr("height", rectSize)
+        .attr("fill", d => d3.color(colorScale((d.theta%(2*math.pi)) / (2*math.pi))).hex());
+
+     // Loop
+     var timer = d3.interval((t) => {
+         kuramoto.update();
+         redraw(kuramoto.data, colorScale);
+         if (t > 1000*maxSec) { timer.stop(); };
+     }, 20);
+ }
+
+ // Change color of rectangles
+ function redraw(data, colorScale) {
+     d3.selectAll("g.row")
+       .data(data)
+     .selectAll("rect")
+       .data(d => d)
+       .attr("fill", d => d3.color(colorScale((d.theta%(2*math.pi) / (2*math.pi)))).hex());
+ }
+
+
+ window.onload = () => {
+     // Activate selected <li> in sidebar
+     $("ul.nav").find("li.active").removeClass("active");
+     $("li#li-kuramoto").addClass("active");
+
+     // Start Kuramoto model animation
+     const size = 20;
+     const k = 10;
+     const dt = 0.002
+     var colorScale = d3.interpolateSinebow;
+     var kuramoto = new Kuramoto(size, k, dt);
+     animateKuramoto(kuramoto, colorScale);
+ }
+
+</script>
+
+
+<style>
+ rect {
+     stroke: #fff;
+     stroke-width: 0.5px;
+ }
+</style>
+
+{% endblock %}

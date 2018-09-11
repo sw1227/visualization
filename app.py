@@ -63,3 +63,9 @@ def complex():
 def harmonograph():
     """ Harmonograph """
     return render_template("harmonograph.html")
+
+
+@app.route("/kuramoto")
+def kuramoto():
+    """ Kuramoto model """
+    return render_template("kuramoto.html")
