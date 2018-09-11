@@ -8,14 +8,17 @@ Kuramoto model simulation
 
 <div class="row">
 
-  <div class="col-md-9 col-sm-9">
+  <div class="col-md-8 col-sm-8">
     <div id="svg-kuramoto">
       <!-- svg -->
     </div>
   </div>
 
-  <div class="col-md-3 col-sm-3" id="dropdown-col">
-    <!-- TODO: dropdown -->
+  <div class="col-md-4 col-sm-4" id="dropdown-col">
+    <div id="svg-phase">
+      <!-- svg -->
+    </div>
+    <!-- TODO: dropdown, time series -->
   </div>
 
 </div>
@@ -52,17 +55,17 @@ Kuramoto model simulation
  };
 
 
- function animateKuramoto(kuramoto, colorScale, maxSec=20, outerWidth=600, outerHeight=600) {
+ function animateKuramoto(kuramoto, colorScale, maxSec=20, parentWidth=600, parentHeight=600) {
      const margin = {top: 0, right: 0, bottom: 0, left: 0};
-     const width = outerWidth - margin.left - margin.right;
-     const height = outerHeight - margin.top - margin.bottom;
+     const width = parentWidth - margin.left - margin.right;
+     const height = parentHeight - margin.top - margin.bottom;
      var svg = d3.select("#svg-kuramoto")
                  .attr("class", "card")
-                 .attr("style", `width: ${outerWidth}px; height: ${outerHeight}px;`)
+                 .attr("style", `width: ${parentWidth}px; height: ${parentHeight}px;`)
                .append("svg")
                  .attr("class", "card-img")
-                 .attr("width", outerWidth)
-                 .attr("height", outerHeight)
+                 .attr("width", parentWidth)
+                 .attr("height", parentHeight)
                .append("g")
                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -81,21 +84,75 @@ Kuramoto model simulation
         .attr("height", rectSize)
         .attr("fill", d => d3.color(colorScale((d.theta%(2*math.pi)) / (2*math.pi))).hex());
 
+     // Draw phase
+     const phaseRadius = parentHeight/4 - 20;
+     drawPhase(kuramoto.data, parentWidth/2, parentHeight/2, colorScale, phaseRadius);
+
      // Loop
      var timer = d3.interval((t) => {
          kuramoto.update();
-         redraw(kuramoto.data, colorScale);
+         redraw(kuramoto.data, colorScale, phaseRadius);
          if (t > 1000*maxSec) { timer.stop(); };
      }, 20);
  }
 
+
+ // Draw phase of each oscillator on a single circle
+ function drawPhase(data, width, height, colorScale, radius) {
+     // SVG
+     var phase = d3.select("#svg-phase")
+                   .attr("class", "card")
+                   .attr("style", `width: ${width}px; height: ${height}px;`)
+                 .append("svg")
+                   .attr("class", "card-img")
+                   .attr("width", width)
+                   .attr("height", height)
+                 .append("g")
+                   .attr("transform", `translate(${width/2},${height/2})`);
+
+     // Color scale of natural frequency
+     const extent = d3.extent([].concat.apply([], data).map(d => d.freq));
+     var freqScale = f => d3.interpolateYlOrRd( (f-extent[0]) / (extent[1]-extent[0]) );
+     // Oscillator circle
+     phase.selectAll("circle.oscillator")
+          .data([].concat.apply([], data))
+        .enter().append("circle")
+          .attr("class", "oscillator")
+          .attr("style", d => `fill: ${d3.color(freqScale(d.freq)).hex()}`)
+          .attr("cx", d => radius * math.cos(d.theta))
+          .attr("cy", d => - radius * math.sin(d.theta))
+          .attr("r", 10);
+     // Center text
+     phase.append("text")
+          .attr("style", "text-anchor: middle;")
+          .text("Phase");
+     // Phase Color Scale
+     phase.selectAll("line.phase")
+          .data(d3.range(0, 2*math.PI, 2*math.PI/8))
+        .enter().append("line")
+          .attr("class", "phase")
+          .attr("x1", d => (radius-20) * math.cos(d))
+          .attr("y1", d => - (radius-20) * math.sin(d))
+          .attr("x2", d => (radius-20) * math.cos(d+2*math.PI/8))
+          .attr("y2", d => - (radius-20) * math.sin(d+2*math.PI/8))
+          .attr("style", d => `stroke: ${d3.color(colorScale(d/(2*math.PI))).hex()};`);
+ }
+
+
  // Change color of rectangles
- function redraw(data, colorScale) {
+ function redraw(data, colorScale, radius) {
+     // rect
      d3.selectAll("g.row")
        .data(data)
      .selectAll("rect")
        .data(d => d)
        .attr("fill", d => d3.color(colorScale((d.theta%(2*math.pi) / (2*math.pi)))).hex());
+
+     // phase
+     d3.selectAll("circle.oscillator")
+       .data([].concat.apply([], data))
+       .attr("cx", d => radius * math.cos(d.theta))
+       .attr("cy", d => - radius * math.sin(d.theta));
  }
 
 
@@ -110,7 +167,7 @@ Kuramoto model simulation
      const dt = 0.002
      var colorScale = d3.interpolateSinebow;
      var kuramoto = new Kuramoto(size, k, dt);
-     animateKuramoto(kuramoto, colorScale);
+     animateKuramoto(kuramoto, colorScale, 20, 500, 500);
  }
 
 </script>
@@ -120,6 +177,12 @@ Kuramoto model simulation
  rect {
      stroke: #fff;
      stroke-width: 0.5px;
+ }
+ circle.oscillator {
+     fill-opacity: 0.3;
+ }
+ line.phase {
+     stroke-width: 2px;
  }
 </style>
 
