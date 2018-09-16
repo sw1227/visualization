@@ -69,3 +69,9 @@ def harmonograph():
 def kuramoto():
     """ Kuramoto model """
     return render_template("kuramoto.html")
+
+
+@app.route("/riemann")
+def riemann():
+    """ Riemann surface 3D """
+    return render_template("riemann.html")
