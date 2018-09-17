@@ -75,3 +75,9 @@ def kuramoto():
 def riemann():
     """ Riemann surface 3D """
     return render_template("riemann.html")
+
+
+@app.route("/hata")
+def hata():
+    """ Hata-map """
+    return render_template("hata.html")

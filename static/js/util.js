@@ -1,8 +1,8 @@
 // Draw square image based on pixel array and color interpolater
 function imshow(elementId, array, size, interpolate=d3.interpolateViridis) {
     var parent = d3.select(`#${elementId}`)
-	.attr("class", "card")
-	.attr("style", `width: ${size}px; height: ${size}px;`);
+        .attr("class", "card")
+        .attr("style", `width: ${size}px; height: ${size}px;`);
     var canvas = parent.select("canvas")
     canvas = canvas.empty() ? parent.append("canvas").attr("class", "card-img") : canvas;
 
@@ -32,9 +32,9 @@ function generateDropdown(data, parentId, name) {
         .attr("class", "btn btn-primary dropdown-toggle")
         .attr("id", `dropdown-${name}`)
         .attr("type", "button")
-	.attr("data-toggle", "dropdown")
+        .attr("data-toggle", "dropdown")
         .attr("aria-haspopup", "true")
-	.attr("aria-expanded", "false")
+        .attr("aria-expanded", "false")
         .text(name);
 
     dropdown.append("div")
@@ -44,6 +44,47 @@ function generateDropdown(data, parentId, name) {
         .attr("class", "dropdown-item")
         .attr("onclick", d => d.callback)
         .text(d => d.text);
+}
+
+
+// Generate Sliders for parameters
+function generateSlider(params, parentId, callbackStr) {
+    var div = d3.select(`#${parentId}`)
+        .selectAll("div")
+        .data(Object.entries(params).map(p => ({"name": p[0], "value": p[1]})))
+      .enter().append("div")
+        .attr("align", "center")
+        .attr("id", d => d.name);
+    var callback = part => (
+        d => (
+            `params.${d.name}.${part}=parseFloat(this.value);` +
+            `d3.select('#${d.name}').select('.value').text(params.${d.name}.toString());` +
+            callbackStr
+        )
+    );
+    // Show value
+    div.append("div")
+        .text(d => `${d.name} = `)
+      .append("span")
+        .attr("class", "value")
+        .text(d => d.value.toString());
+    // Real part
+    div.append("div")
+        .text("Re: ")
+      .append("input")
+        .attr("type", "range").attr("class", "slider").attr("style", "vertical-align: middle;")
+        .attr("min", "-1").attr("max", "1").attr("step", "0.05")
+        .attr("value", d => d.value.re)
+        .attr("oninput", callback("re"));
+    // Imaginary part
+    div.append("div")
+        .text("Im: ")
+      .append("input")
+        .attr("type", "range").attr("class", "slider").attr("style", "vertical-align: middle;")
+        .attr("min", "-1").attr("max", "1").attr("step", "0.05")
+        .attr("value", d => d.value.im)
+        .attr("oninput", callback("im"));
+    div.append("br");
 }
 
 
