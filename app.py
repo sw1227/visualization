@@ -81,3 +81,9 @@ def riemann():
 def hata():
     """ Hata-map """
     return render_template("hata.html")
+
+
+@app.route("/quad")
+def quad():
+    """ Quadtree Mountain """
+    return render_template("quad.html")

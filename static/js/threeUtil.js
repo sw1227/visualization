@@ -4,6 +4,7 @@ var World = function(elementId, size, antialias=true, color="#ffffff") {
     // Initialize the World
     this.scene = new THREE.Scene();
     this.clock = new THREE.Clock();
+    this.lights = [];
     this.renderer = new THREE.WebGLRenderer({antialias: antialias});
     this.renderer.setSize(size.width, size.height);
     this.renderer.setClearColor(new THREE.Color(color));
@@ -18,6 +19,21 @@ var World = function(elementId, size, antialias=true, color="#ffffff") {
 
         this.camera = camera;
         this.scene.add(this.camera);
+    }
+
+    // Add ambient light to the world
+    this.addAmbientLight = function(color="#ffffff") {
+        var ambientLight = new THREE.AmbientLight(color);
+        this.lights.push(ambientLight);
+        this.scene.add(ambientLight);
+    }
+
+    // Add spot light to the world
+    this.addSpotLight = function(position, color="#ffffff") {
+        var spotLight = new THREE.SpotLight(color);
+        spotLight.position.set(...position);
+        this.lights.push(spotLight);
+        this.scene.add(spotLight);
     }
 
     // Render the world using its renderer, scene, and camera
@@ -78,8 +94,17 @@ var World = function(elementId, size, antialias=true, color="#ffffff") {
             wireframe: false
         });
         // mesh
-        this.plane = new THREE.Mesh( planeGeometry, planeMaterial );
-        this.scene.add(this.plane);
+        var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+        this.scene.add(plane);
+    }
+
+    // Add box
+    this.addBox = function(size, position, color) {
+        var boxGeometry = new THREE.BoxGeometry(...size);
+        var boxMaterial = new THREE.MeshLambertMaterial({ color: color, wireframe: false });
+        var box = new THREE.Mesh(boxGeometry, boxMaterial);
+        box.position.set(...position);
+        this.scene.add(box);
     }
 }
 
