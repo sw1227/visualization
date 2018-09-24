@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import NestedList from './List';
+import Lsystem from './Lsystem';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -62,6 +63,7 @@ const styles = theme => ({
 class ResponsiveDrawer extends React.Component {
     state = {
         mobileOpen: false,
+        title: "Title",
     };
 
     handleDrawerToggle = () => {
@@ -95,7 +97,7 @@ class ResponsiveDrawer extends React.Component {
                     <MenuIcon />
                   </IconButton>
                   <Typography variant="title" color="inherit" noWrap>
-                    {this.props.title}
+                    {this.state.title}
                   </Typography>
                 </Toolbar>
               </AppBar>
@@ -128,18 +130,32 @@ class ResponsiveDrawer extends React.Component {
               </Hidden>
               <main className={classes.content}>
                 <div className={classes.toolbar} />
-                { this.props.children }
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/map" component={Map}/>
+                <Route exact path="/terrain" component={Terrain}/>
+                <Route exact path="/lsystem"
+                       render={() => <Lsystem callback={t => this.setState({title: t})}/>}/>
               </main>
             </div>
         );
     }
 }
 
+// Stub
+const Home = () => (
+    <div>home!!!</div>
+);
+const Map = () => (
+    <div>map!!!</div>
+);
+const Terrain = () => (
+    <div>terrain!!!</div>
+);
+
 
 ResponsiveDrawer.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
 };
 
 const StyledDrawer = withStyles(styles, { withTheme: true })(ResponsiveDrawer);

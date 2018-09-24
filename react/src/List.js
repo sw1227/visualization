@@ -11,7 +11,7 @@ import Collapse from '@material-ui/core/Collapse';
 import LayersIcon from '@material-ui/icons/LayersOutlined';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
+import CodeIcon from '@material-ui/icons/CodeOutlined';
 import MapIcon from '@material-ui/icons/MapOutlined';
 import HomeIcon from '@material-ui/icons/HomeOutlined';
 import TerrainIcon from '@material-ui/icons/TerrainOutlined';
@@ -119,14 +119,14 @@ class NestedList extends React.Component {
                 <Collapse in={this.state.open.math} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     <Divider />
-                    <ListItem button className={classes.nested}  component={Link} to="/star"
+                    <ListItem button className={classes.nested}  component={Link} to="/lsystem"
                               selected={this.state.selectedIndex === 3}
                               onClick={event => this.handleListItemClick(event, 3)}
                       >
                       <ListItemIcon>
-                        <StarBorder />
+                        <CodeIcon />
                       </ListItemIcon>
-                      <ListItemText inset primary="Starred" />
+                      <ListItemText inset primary="L-system" />
                     </ListItem>
 
                   </List>
