@@ -82,7 +82,7 @@ class ResponsiveDrawer extends React.Component {
                   <Link to="/" className={classes.titleLogo}>Material</Link>
                 </div>
               </div>
-              <NestedList />
+              <NestedList callback={this.handleDrawerToggle} />
             </div>
         );
 
