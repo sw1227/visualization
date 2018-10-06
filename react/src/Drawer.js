@@ -11,6 +11,8 @@ import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import NestedList from './List';
 import Lsystem from './Lsystem';
+import Inversion from './Inversion';
+import RoadDirection from './RoadDirection';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -131,10 +133,12 @@ class ResponsiveDrawer extends React.Component {
               <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Route exact path="/" component={Home}/>
-                <Route exact path="/map" component={Map}/>
+                <Route exact path="/road-direction" component={RoadDirection}/>
                 <Route exact path="/terrain" component={Terrain}/>
                 <Route exact path="/lsystem"
                        render={() => <Lsystem callback={t => this.setState({title: t})}/>}/>
+                <Route exact path="/inversion"
+                       render={() => <Inversion callback={t => this.setState({title: t})}/>}/>
               </main>
             </div>
         );
@@ -144,9 +148,6 @@ class ResponsiveDrawer extends React.Component {
 // Stub
 const Home = () => (
     <div>home!!!</div>
-);
-const Map = () => (
-    <div>map!!!</div>
 );
 const Terrain = () => (
     <div>terrain!!!</div>

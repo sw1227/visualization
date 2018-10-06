@@ -16,18 +16,19 @@ import MapIcon from '@material-ui/icons/MapOutlined';
 import HomeIcon from '@material-ui/icons/HomeOutlined';
 import TerrainIcon from '@material-ui/icons/TerrainOutlined';
 import PaletteIcon from '@material-ui/icons/PaletteOutlined';
+import LensIcon from '@material-ui/icons/LensOutlined';
 import Divider from '@material-ui/core/Divider';
 
 
 const styles = theme => ({
     root: {
         width: '100%',
-        maxWidth: 360,
+        maxWidth: 400,
         backgroundColor: theme.palette.background.paper,
     },
 
     nested: {
-        paddingLeft: theme.spacing.unit * 6,
+        paddingLeft: theme.spacing.unit * 4,
     },
 });
 
@@ -84,14 +85,14 @@ class NestedList extends React.Component {
                 <Collapse in={this.state.open.geo} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     <Divider />
-                    <ListItem button className={classes.nested} component={Link} to="/map"
+                    <ListItem button className={classes.nested} component={Link} to="/road-direction"
                               selected={this.state.selectedIndex === 1}
                               onClick={event => this.handleListItemClick(event, 1)}
                       >
                       <ListItemIcon>
                         <MapIcon />
                       </ListItemIcon>
-                      <ListItemText inset primary="Map"/>
+                      <ListItemText inset primary="Road Direction"/>
                     </ListItem>
 
                     <ListItem button className={classes.nested} component={Link} to="/terrain"
@@ -127,6 +128,16 @@ class NestedList extends React.Component {
                         <CodeIcon />
                       </ListItemIcon>
                       <ListItemText inset primary="L-system" />
+                    </ListItem>
+
+                    <ListItem button className={classes.nested}  component={Link} to="/inversion"
+                              selected={this.state.selectedIndex === 4}
+                              onClick={event => this.handleListItemClick(event, 4)}
+                      >
+                      <ListItemIcon>
+                        <LensIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="Circle Inversion" />
                     </ListItem>
 
                   </List>
