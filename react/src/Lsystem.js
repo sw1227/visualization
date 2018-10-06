@@ -1,9 +1,9 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import * as d3 from "d3";
 
-const shape = {width: 600, height: 600};
 
 // Define L-system
 var Lsystem = function(start, rule) {
@@ -30,12 +30,18 @@ var rule = {
 
 
 const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
     paper: {
-        marginTop: theme.spacing.unit * 2,
-        marginLeft: theme.spacing.unit * 2,
+        margin: theme.spacing.unit * 2,
         padding: 0,
-        width: shape.width,
-        height: shape.height,
+        width:  `calc(100% - ${theme.spacing.unit*4}px)`,
+        height: `calc(100% - ${theme.spacing.unit*4}px)`,
+    },
+    settings: {
+        margin: theme.spacing.unit * 2,
+        padding: 0,
     },
 });
 
@@ -43,6 +49,7 @@ class LsystemComponent extends React.Component {
     constructor(props) {
         super(props);
         this.props.callback("L-system");
+        // this.paper = React.createRef();
     }
 
     componentDidMount() {
@@ -52,12 +59,15 @@ class LsystemComponent extends React.Component {
     }
 
     drawTree(data) {
+        // adjust to width
+        const size = Math.min(window.innerHeight - 64 - 16*2, this.refs.adjuster.offsetWidth);
+        d3.select(this.refs.svg).attr("width", size).attr("height", size);
         var svg = d3.select(this.refs.svg).append("g")
-            .attr("transform", `translate(${shape.width/2}, 0)`);
+            .attr("transform", `translate(${size/2}, 0)`);
         // Invert up/down
-        var yScale = d3.scaleLinear().domain([0, shape.height]).range([shape.height, 0]);
+        var yScale = d3.scaleLinear().domain([0, size]).range([size, 0]);
 
-        const len = 4;
+        const len = size / 150;
         var position = {"x": 0, "y": 0, "angle": Math.PI / 2};
         var stack = [];
 
@@ -106,9 +116,22 @@ class LsystemComponent extends React.Component {
         const { classes } = this.props;
 
         return (
-            <Paper className={classes.paper}>
-              <svg ref="svg" width={shape.width} height={shape.height}></svg>
-            </Paper>
+            <div className={classes.root}>
+            <Grid container spacing={24}>
+                <Grid item sm={8} xs={12}>
+                    <Paper ref="paper" className={classes.paper}>
+                        <div ref="adjuster">
+                            <svg ref="svg"></svg>
+                        </div>
+                    </Paper>
+                </Grid>
+                <Grid item sm={4} xs={12}>
+                    <div className={classes.settings}>
+                        TODO
+                    </div>
+                </Grid>
+            </Grid>
+            </div>
         );
     }
 }

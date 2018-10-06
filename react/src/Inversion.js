@@ -119,7 +119,7 @@ class Inversion extends React.Component {
             <Grid container spacing={24}>
               <Grid item sm={8}>
                 <Paper className={classes.paper}>
-                  <Imshow data={this.state.data} interpolate={this.state.interpolate.scale}/>
+                    <Imshow data={this.state.data} interpolate={this.state.interpolate.scale}/>
                 </Paper>
               </Grid>
               <Grid item sm={4}>
