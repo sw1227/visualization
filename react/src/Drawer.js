@@ -53,7 +53,8 @@ const styles = theme => ({
     content: {
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
-        padding: 0
+        padding: 0,
+        overflow: "scroll",
     },
     titleLogo: {
         color: "#fff",
