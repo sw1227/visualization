@@ -14,6 +14,7 @@ import Lsystem from './Lsystem';
 import Inversion from './Inversion';
 import Complex from './Complex';
 import Ca from './Ca';
+import Riemann from './Riemann';
 import RoadDirection from './RoadDirection';
 
 const drawerWidth = 240;
@@ -146,6 +147,8 @@ class ResponsiveDrawer extends React.Component {
                        render={() => <Complex callback={t => this.setState({title: t})}/>}/>
                 <Route exact path="/ca"
                        render={() => <Ca callback={t => this.setState({title: t})}/>}/>
+                <Route exact path="/riemann"
+                       render={() => <Riemann callback={t => this.setState({title: t})}/>}/>
               </main>
             </div>
         );

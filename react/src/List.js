@@ -19,6 +19,7 @@ import PaletteIcon from '@material-ui/icons/PaletteOutlined';
 import LensIcon from '@material-ui/icons/LensOutlined';
 import GridIcon from '@material-ui/icons/GridOnOutlined';
 import AppsIcon from '@material-ui/icons/AppsOutlined';
+import ThreeIcon from '@material-ui/icons/ThreeDRotationOutlined';
 import Divider from '@material-ui/core/Divider';
 
 
@@ -161,6 +162,16 @@ class NestedList extends React.Component {
                         <AppsIcon />
                       </ListItemIcon>
                       <ListItemText inset primary="1-D CA" />
+                    </ListItem>
+
+                    <ListItem button className={classes.nested}  component={Link} to="/riemann"
+                              selected={this.state.selectedIndex === 7}
+                              onClick={event => this.handleListItemClick(event, 7)}
+                      >
+                      <ListItemIcon>
+                        <ThreeIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="Riemann Surface" />
                     </ListItem>
 
                   </List>
