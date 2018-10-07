@@ -18,6 +18,7 @@ import TerrainIcon from '@material-ui/icons/TerrainOutlined';
 import PaletteIcon from '@material-ui/icons/PaletteOutlined';
 import LensIcon from '@material-ui/icons/LensOutlined';
 import GridIcon from '@material-ui/icons/GridOnOutlined';
+import AppsIcon from '@material-ui/icons/AppsOutlined';
 import Divider from '@material-ui/core/Divider';
 
 
@@ -150,6 +151,16 @@ class NestedList extends React.Component {
                         <GridIcon />
                       </ListItemIcon>
                       <ListItemText inset primary="Complex function" />
+                    </ListItem>
+
+                    <ListItem button className={classes.nested}  component={Link} to="/ca"
+                              selected={this.state.selectedIndex === 6}
+                              onClick={event => this.handleListItemClick(event, 6)}
+                      >
+                      <ListItemIcon>
+                        <AppsIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="1-D CA" />
                     </ListItem>
 
                   </List>
