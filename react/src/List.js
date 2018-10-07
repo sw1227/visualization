@@ -17,6 +17,7 @@ import HomeIcon from '@material-ui/icons/HomeOutlined';
 import TerrainIcon from '@material-ui/icons/TerrainOutlined';
 import PaletteIcon from '@material-ui/icons/PaletteOutlined';
 import LensIcon from '@material-ui/icons/LensOutlined';
+import GridIcon from '@material-ui/icons/GridOnOutlined';
 import Divider from '@material-ui/core/Divider';
 
 
@@ -139,6 +140,16 @@ class NestedList extends React.Component {
                         <LensIcon />
                       </ListItemIcon>
                       <ListItemText inset primary="Circle Inversion" />
+                    </ListItem>
+
+                    <ListItem button className={classes.nested}  component={Link} to="/complex"
+                              selected={this.state.selectedIndex === 5}
+                              onClick={event => this.handleListItemClick(event, 5)}
+                      >
+                      <ListItemIcon>
+                        <GridIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="Complex function" />
                     </ListItem>
 
                   </List>

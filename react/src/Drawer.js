@@ -12,6 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NestedList from './List';
 import Lsystem from './Lsystem';
 import Inversion from './Inversion';
+import Complex from './Complex';
 import RoadDirection from './RoadDirection';
 
 const drawerWidth = 240;
@@ -139,6 +140,8 @@ class ResponsiveDrawer extends React.Component {
                        render={() => <Lsystem callback={t => this.setState({title: t})}/>}/>
                 <Route exact path="/inversion"
                        render={() => <Inversion callback={t => this.setState({title: t})}/>}/>
+                <Route exact path="/complex"
+                       render={() => <Complex callback={t => this.setState({title: t})}/>}/>
               </main>
             </div>
         );
