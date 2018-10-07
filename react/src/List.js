@@ -60,7 +60,7 @@ class NestedList extends React.Component {
             <div className={classes.root}>
               <List
                 component="nav"
-                subheader={<ListSubheader component="div">Nested List Items</ListSubheader>}
+                subheader={<ListSubheader component="div">Select item</ListSubheader>}
                 >
 
                 <Divider />

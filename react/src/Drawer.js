@@ -29,7 +29,7 @@ const styles = theme => ({
         position: 'absolute',
         marginLeft: drawerWidth,
         color: "#fff",
-        backgroundColor: "#95c9d8",
+        backgroundColor: "#68b3c8",
         [theme.breakpoints.up('md')]: {
             width: `calc(100% - ${drawerWidth}px)`,
         },
@@ -79,7 +79,7 @@ class ResponsiveDrawer extends React.Component {
             <div>
               <div className={classes.toolbar}>
                 <div style = {{ textAlign: "center", paddingTop: "12px" }}>
-                  <Link to="/" className={classes.titleLogo}>Material</Link>
+                  <Link to="/" className={classes.titleLogo}>Visualizations</Link>
                 </div>
               </div>
               <NestedList callback={this.handleDrawerToggle} />
