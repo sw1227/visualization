@@ -11,9 +11,15 @@ export const World = function(elementId, size, antialias=true, color="#ffffff") 
     this.clock = new THREE.Clock();
     this.lights = [];
     this.renderer = new THREE.WebGLRenderer({antialias: antialias});
+    this.renderer.setPixelRatio(window.devicePixelRatio); // fix resolution
     this.renderer.setSize(size.width, size.height);
     this.renderer.setClearColor(new THREE.Color(color));
     document.getElementById(elementId).appendChild(this.renderer.domElement);
+
+    // Disable scroll on WebGL element
+    ["touchmove", "mousemove", "wheel", "wheel.zoom"].forEach(eventName => {
+        document.getElementById(elementId).addEventListener(eventName, e => e.preventDefault(), {passive: false});
+    });
 
     // Add camera to the world
     this.addCamera = function(position, up, target, aspect, fov=45, near=0.1, far=1000) {
