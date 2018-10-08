@@ -1,6 +1,10 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import * as THREE from 'three';
 import * as math from 'mathjs';
@@ -9,7 +13,7 @@ import { World, createStats} from './threeUtil';
 
 
 // Monkey patch to the world
-World.prototype.addCalabiYau = function() {
+World.prototype.addCalabiYau = function(n, a) {
     function coordinate(x, y, n, k1, k2, a) {
         const z1 = math.multiply(
             math.exp(math.complex(0, 2*math.PI*k1/n)),
@@ -24,8 +28,6 @@ World.prototype.addCalabiYau = function() {
 
     const dx = math.PI/10;
     const dy = math.PI/10;
-    const n = 6;
-    const a = 0.4;
     d3.cross(d3.range(n), d3.range(n)).forEach(k => {
         d3.range(0, math.PI/2, dx).forEach(x => {
             d3.range(-math.PI/2, math.PI/2, dy).forEach(y => {
@@ -57,35 +59,54 @@ const styles = theme => ({
         position: "absolute",
         right: 0,
         bottom: 0,
-    }
+    },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    formControl: {
+        marginTop: theme.spacing.unit * 2,
+        marginLeft: 12,
+        marginRight: 12,
+        minWidth: 150,
+    },
 });
 
 class CalabiYau extends React.Component {
     constructor(props) {
         super(props);
         this.props.callback("Calabi-Yau Manifold projection");
+
+        this.state = {
+            exponent: 6,
+            projection: 0.4
+        };
     }
 
     componentDidMount() {
-        const size = {
-            "width": this.refs.webgl.offsetWidth,
-            "height": window.innerHeight - 64 - 16*2
-        };
-        this.drawCalabiYau(size);
+        this.setState({
+            size: {
+                "width": this.refs.webgl.offsetWidth,
+                "height": window.innerHeight - 64 - 16*2
+            }
+        }, this.drawCalabiYau);
     }
 
-    drawCalabiYau(size) {
+    drawCalabiYau() {
         // Performance monitor
         const stats = createStats("Stats-output");
 
         // Create a new world!
-        const world = new World("calabiyau", size);
-        world.addCamera([7, 0, 0], [0, 0, 1],
-            world.scene.position, size.width/size.height);
+        const world = new World("calabiyau", this.state.size);
+        this.setState({
+            world: world
+        });
+        world.addCamera([7, 0, 0], [0, 0, 1], world.scene.position,
+            this.state.size.width/this.state.size.height);
         world.addTrackball();
 
         // Calabi-Yau Manifold
-        world.addCalabiYau();
+        world.addCalabiYau(this.state.exponent, this.state.projection);
 
         // Animation loop
         const animate = function () {
@@ -97,6 +118,21 @@ class CalabiYau extends React.Component {
             world.render();
         };
         animate();
+    }
+
+    updateCalabiYau() {
+        // Remove
+        while(this.state.world.scene.children.length > 0){
+            this.state.world.scene.remove(this.state.world.scene.children[0]);
+        }
+        // new Calabi-Yau Manifold
+        this.state.world.addCalabiYau(this.state.exponent, this.state.projection);
+    }
+
+    handleChange = event => {
+        this.setState({
+            [event.target.name]: event.target.value
+        }, this.updateCalabiYau);
     }
 
     render() {
@@ -112,7 +148,44 @@ class CalabiYau extends React.Component {
                     </Paper>
                 </Grid>
 
+                {/* Form */}
                 <Grid item sm={3} xs={12}>
+                    <form className={classes.container} noValidate autoComplete="off">
+                        {/* Exponent */}
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="exponent">Exponent</InputLabel>
+                            <Select
+                                value={this.state.exponent}
+                                onChange={this.handleChange}
+                                inputProps={{
+                                    name: 'exponent',
+                                    id: 'exponent',
+                                }}
+                                autoWidth
+                            >
+                                {d3.range(2, 9).map(d => (
+                                    <MenuItem key={d.toString()} value={d}>{d.toString()}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        {/* Projection */}
+                        <FormControl className={classes.formControl}>
+                            <InputLabel htmlFor="projection">Projection</InputLabel>
+                            <Select
+                                value={this.state.projection}
+                                onChange={this.handleChange}
+                                inputProps={{
+                                    name: 'projection',
+                                    id: 'projection',
+                                }}
+                                autoWidth
+                            >
+                                {d3.range(0, 2 * math.PI, 0.4).map(d => (
+                                    <MenuItem key={d.toString()} value={d}>{(Math.round(10 * d) / 10).toString()}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </form>
                 </Grid>
 
             </Grid>
