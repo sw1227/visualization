@@ -174,6 +174,16 @@ class NestedList extends React.Component {
                       <ListItemText inset primary="Riemann Surface" />
                     </ListItem>
 
+                    <ListItem button className={classes.nested}  component={Link} to="/calabiyau"
+                              selected={this.state.selectedIndex === 8}
+                              onClick={event => this.handleListItemClick(event, 8)}
+                      >
+                      <ListItemIcon>
+                        <ThreeIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="Calabi-Yau Manifold" />
+                    </ListItem>
+
                   </List>
                 </Collapse>
                 <Divider />

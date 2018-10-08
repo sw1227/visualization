@@ -15,6 +15,7 @@ import Inversion from './Inversion';
 import Complex from './Complex';
 import Ca from './Ca';
 import Riemann from './Riemann';
+import CalabiYau from './CalabiYau';
 import RoadDirection from './RoadDirection';
 
 const drawerWidth = 240;
@@ -149,6 +150,8 @@ class ResponsiveDrawer extends React.Component {
                        render={() => <Ca callback={t => this.setState({title: t})}/>}/>
                 <Route exact path="/riemann"
                        render={() => <Riemann callback={t => this.setState({title: t})}/>}/>
+                <Route exact path="/calabiyau"
+                       render={() => <CalabiYau callback={t => this.setState({title: t})}/>}/>
               </main>
             </div>
         );

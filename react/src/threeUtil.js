@@ -109,6 +109,24 @@ export const World = function(elementId, size, antialias=true, color="#ffffff") 
         this.scene.add(plane);
     }
 
+    // Add Rect with normal material
+    this.addNormalRect = function(v1, v2, v3, v4) {
+        const planeGeometry = new THREE.Geometry();
+        // add vertices
+        [v1, v2, v3, v4].forEach(v => planeGeometry.vertices.push(v));
+        // add faces
+        planeGeometry.faces.push(new THREE.Face3(0, 1, 2));
+        planeGeometry.faces.push(new THREE.Face3(2, 3, 0));
+        planeGeometry.computeFaceNormals();
+
+        // mesh
+        const plane = new THREE.Mesh(
+            planeGeometry,
+            new THREE.MeshNormalMaterial({side: THREE.DoubleSide,})
+        );
+        this.scene.add(plane);
+    }
+
     // Add box
     this.addBox = function(size, position, color) {
         const boxGeometry = new THREE.BoxGeometry(...size);
