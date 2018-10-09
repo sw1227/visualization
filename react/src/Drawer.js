@@ -65,6 +65,9 @@ const styles = theme => ({
         fontSize: "1.5rem",
         textDecoration: "none"
     },
+    smDown: {
+        overflow: "scroll",
+    }
 });
 
 
@@ -125,7 +128,7 @@ class ResponsiveDrawer extends React.Component {
                   {drawer}
                 </Drawer>
               </Hidden>
-              <Hidden smDown implementation="css">
+              <Hidden smDown implementation="css" className={classes.smDown}>
                 <Drawer
                   variant="permanent"
                   open

@@ -61,10 +61,7 @@ class NestedList extends React.Component {
 
         return (
             <div className={classes.root}>
-              <List
-                component="nav"
-                subheader={<ListSubheader component="div">Select item</ListSubheader>}
-                >
+              <List component="nav">
 
                 <Divider />
                 <ListItem button component={Link} to="/"
