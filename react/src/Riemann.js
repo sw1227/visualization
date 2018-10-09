@@ -26,7 +26,7 @@ import { World, createStats} from './threeUtil';
                 {"r": r+dR, "theta": theta+dTheta},
                 {"r": r,    "theta": theta+dTheta}
             ];
-            this.addRect(
+            this.addBasicRect(
                 ...data.map(d => parametricPos(d.r, d.theta)),
                 d3.interpolateSinebow((theta + dTheta/2) / (4*math.PI))
             );

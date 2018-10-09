@@ -122,9 +122,7 @@ class CalabiYau extends React.Component {
 
     updateCalabiYau() {
         // Remove
-        while(this.state.world.scene.children.length > 0){
-            this.state.world.scene.remove(this.state.world.scene.children[0]);
-        }
+        this.state.world.removeAll();
         // new Calabi-Yau Manifold
         this.state.world.addCalabiYau(this.state.exponent, this.state.projection);
     }

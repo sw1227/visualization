@@ -89,7 +89,7 @@ export const World = function(elementId, size, antialias=true, color="#ffffff") 
     }
 
     // Add rectangle mesh to the world
-    this.addRect = function(v1, v2, v3, v4, color) {
+    this.addRect = function(v1, v2, v3, v4, material) {
         const planeGeometry = new THREE.Geometry();
         // add vertices
         [v1, v2, v3, v4].forEach(v => planeGeometry.vertices.push(v));
@@ -98,33 +98,31 @@ export const World = function(elementId, size, antialias=true, color="#ffffff") 
         planeGeometry.faces.push(new THREE.Face3(2, 3, 0));
         planeGeometry.computeFaceNormals();
 
+        // mesh
+        const plane = new THREE.Mesh( planeGeometry, material );
+        this.scene.add(plane);
+    }
+
+    // Add Rect with basic material
+    this.addBasicRect = function(v1, v2, v3, v4, color) {
         // material
-        const planeMaterial = new THREE.MeshBasicMaterial({
+        const basicMaterial = new THREE.MeshBasicMaterial({
             color: color,
             side: THREE.DoubleSide,
             wireframe: false
         });
         // mesh
-        const plane = new THREE.Mesh( planeGeometry, planeMaterial );
-        this.scene.add(plane);
+        this.addRect(v1, v2, v3, v4, basicMaterial);
     }
 
     // Add Rect with normal material
     this.addNormalRect = function(v1, v2, v3, v4) {
-        const planeGeometry = new THREE.Geometry();
-        // add vertices
-        [v1, v2, v3, v4].forEach(v => planeGeometry.vertices.push(v));
-        // add faces
-        planeGeometry.faces.push(new THREE.Face3(0, 1, 2));
-        planeGeometry.faces.push(new THREE.Face3(2, 3, 0));
-        planeGeometry.computeFaceNormals();
-
+        // material
+        const normalMaterial = new THREE.MeshNormalMaterial({
+            side: THREE.DoubleSide
+        })
         // mesh
-        const plane = new THREE.Mesh(
-            planeGeometry,
-            new THREE.MeshNormalMaterial({side: THREE.DoubleSide,})
-        );
-        this.scene.add(plane);
+        this.addRect(v1, v2, v3, v4, normalMaterial);
     }
 
     // Add box
@@ -134,6 +132,13 @@ export const World = function(elementId, size, antialias=true, color="#ffffff") 
         const box = new THREE.Mesh(boxGeometry, boxMaterial);
         box.position.set(...position);
         this.scene.add(box);
+    }
+
+    // Remove all objects
+    this.removeAll = function() {
+        while(this.scene.children.length > 0){
+            this.scene.remove(this.scene.children[0]);
+        }
     }
 }
 
