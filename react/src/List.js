@@ -164,9 +164,19 @@ class NestedList extends React.Component {
                       <ListItemText inset primary="1-D CA" />
                     </ListItem>
 
-                    <ListItem button className={classes.nested}  component={Link} to="/riemann"
+                    <ListItem button className={classes.nested}  component={Link} to="/lifegame"
                               selected={this.state.selectedIndex === 7}
                               onClick={event => this.handleListItemClick(event, 7)}
+                      >
+                      <ListItemIcon>
+                        <AppsIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="Conway's Game of Life" />
+                    </ListItem>
+
+                    <ListItem button className={classes.nested}  component={Link} to="/riemann"
+                              selected={this.state.selectedIndex === 8}
+                              onClick={event => this.handleListItemClick(event, 8)}
                       >
                       <ListItemIcon>
                         <ThreeIcon />
@@ -175,8 +185,8 @@ class NestedList extends React.Component {
                     </ListItem>
 
                     <ListItem button className={classes.nested}  component={Link} to="/calabiyau"
-                              selected={this.state.selectedIndex === 8}
-                              onClick={event => this.handleListItemClick(event, 8)}
+                              selected={this.state.selectedIndex === 9}
+                              onClick={event => this.handleListItemClick(event, 9)}
                       >
                       <ListItemIcon>
                         <ThreeIcon />

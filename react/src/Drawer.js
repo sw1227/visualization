@@ -14,6 +14,7 @@ import Lsystem from './Lsystem';
 import Inversion from './Inversion';
 import Complex from './Complex';
 import Ca from './Ca';
+import GameOfLife from './GameOfLife';
 import Riemann from './Riemann';
 import CalabiYau from './CalabiYau';
 import RoadDirection from './RoadDirection';
@@ -148,6 +149,8 @@ class ResponsiveDrawer extends React.Component {
                        render={() => <Complex callback={t => this.setState({title: t})}/>}/>
                 <Route exact path="/ca"
                        render={() => <Ca callback={t => this.setState({title: t})}/>}/>
+                <Route exact path="/lifegame"
+                       render={() => <GameOfLife callback={t => this.setState({title: t})}/>}/>
                 <Route exact path="/riemann"
                        render={() => <Riemann callback={t => this.setState({title: t})}/>}/>
                 <Route exact path="/calabiyau"
