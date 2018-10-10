@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -20,6 +19,7 @@ import LensIcon from '@material-ui/icons/LensOutlined';
 import GridIcon from '@material-ui/icons/GridOnOutlined';
 import AppsIcon from '@material-ui/icons/AppsOutlined';
 import ThreeIcon from '@material-ui/icons/ThreeDRotationOutlined';
+import WaveIcon from '@material-ui/icons/WavesOutlined';
 import Divider from '@material-ui/core/Divider';
 
 
@@ -189,6 +189,16 @@ class NestedList extends React.Component {
                         <ThreeIcon />
                       </ListItemIcon>
                       <ListItemText inset primary="Calabi-Yau Manifold" />
+                    </ListItem>
+
+                    <ListItem button className={classes.nested}  component={Link} to="/harmonograph"
+                              selected={this.state.selectedIndex === 10}
+                              onClick={event => this.handleListItemClick(event, 10)}
+                      >
+                      <ListItemIcon>
+                        <WaveIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="Harmonograph" />
                     </ListItem>
 
                   </List>

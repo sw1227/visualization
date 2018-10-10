@@ -17,6 +17,7 @@ import Ca from './Ca';
 import GameOfLife from './GameOfLife';
 import Riemann from './Riemann';
 import CalabiYau from './CalabiYau';
+import Harmonograph from './Harmonograph';
 import RoadDirection from './RoadDirection';
 
 const drawerWidth = 240;
@@ -158,6 +159,8 @@ class ResponsiveDrawer extends React.Component {
                        render={() => <Riemann callback={t => this.setState({title: t})}/>}/>
                 <Route exact path="/calabiyau"
                        render={() => <CalabiYau callback={t => this.setState({title: t})}/>}/>
+                <Route exact path="/harmonograph"
+                       render={() => <Harmonograph callback={t => this.setState({title: t})}/>}/>
               </main>
             </div>
         );

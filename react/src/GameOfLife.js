@@ -77,7 +77,7 @@ class GameOfLifeComponent extends React.Component {
     }
 
     componentDidMount() {
-        this.drawLife()
+        this.drawLife();
     }
 
     drawLife() {
