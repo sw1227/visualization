@@ -20,6 +20,7 @@ import GridIcon from '@material-ui/icons/GridOnOutlined';
 import AppsIcon from '@material-ui/icons/AppsOutlined';
 import ThreeIcon from '@material-ui/icons/ThreeDRotationOutlined';
 import WaveIcon from '@material-ui/icons/WavesOutlined';
+import GrainIcon from '@material-ui/icons/GrainOutlined';
 import Divider from '@material-ui/core/Divider';
 
 
@@ -199,6 +200,16 @@ class NestedList extends React.Component {
                         <WaveIcon />
                       </ListItemIcon>
                       <ListItemText inset primary="Harmonograph" />
+                    </ListItem>
+
+                    <ListItem button className={classes.nested}  component={Link} to="/hata"
+                              selected={this.state.selectedIndex === 11}
+                              onClick={event => this.handleListItemClick(event, 11)}
+                      >
+                      <ListItemIcon>
+                        <GrainIcon />
+                      </ListItemIcon>
+                      <ListItemText inset primary="Hata-Map" />
                     </ListItem>
 
                   </List>

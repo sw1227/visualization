@@ -33,7 +33,7 @@ class Harmonograph extends React.Component {
             dumping: 0.0001,
             frequency: 2, // [Hz]
             cent: 38 // frequency ratio = 2 ^ (cent/1200)
-        }
+        };
     }
 
     componentDidMount() {
