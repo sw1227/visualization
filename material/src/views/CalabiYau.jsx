@@ -113,7 +113,7 @@ class CalabiYau extends React.Component {
             <Frame title="Calabi-Yau Manifold">
                 <GridContainer>
                     <GridItem sm={9} xs={12}>
-                        {/* left: canvas */}
+                        {/* left */}
                         <Card className={classes.card}>
                             <div id="Stats-output" className={classes.stats}></div>
                             <div id="calabiyau" ref="webgl"></div>
