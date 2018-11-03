@@ -70,7 +70,7 @@ const headerStyle = {
     backgroundColor: primaryColor,
     color: "#FFFFFF",
     boxShadow:
-      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(156, 39, 176, 0.46)"
+      "0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 12px -5px rgba(94, 90, 206, 0.46)"// RGB of primary color
   },
   info: {
     backgroundColor: infoColor,
