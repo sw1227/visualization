@@ -21,7 +21,10 @@
     "react-router-dom": "4.3.1",
     "react-scripts": "1.1.5",
     "react-slick": "0.23.1",
-    "react-swipeable-views": "0.13.0"
+    "react-swipeable-views": "0.13.0",
+    "stats-js": "^1.0.0-alpha1",
+    "three": "^0.98.0",
+    "three-trackballcontrols": "^0.0.7"
   },
   "devDependencies": {
     "babel-cli": "6.26.0",

@@ -3,8 +3,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Card from "components/Card/Card.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
-import * as d3 from 'd3';
-import * as math from 'mathjs';
+import * as d3 from "d3";
+import * as math from "mathjs";
 import Frame from "./common/Frame.jsx";
 
 

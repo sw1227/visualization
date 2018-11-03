@@ -5,7 +5,7 @@ import Card from "components/Card/Card.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
 import GridItem from "components/Grid/GridItem.jsx";
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
-import * as d3 from 'd3';
+import * as d3 from "d3";
 import Frame from "./common/Frame.jsx";
 import Imshow from "./common/Imshow.jsx";
 
@@ -106,27 +106,25 @@ class Inversion extends React.Component {
                     <GridItem sm={4} xs={12} className={classes.rightContainer}>
                         {/* right */}
                         <CustomDropdown
-                            noLiPadding
-                            buttonText="Color Scale"
+                            buttonText={`Color Scale: ${this.state.interpolate.name}`}
                             buttonProps={{
                                 color: "transparent"
                             }}
                             buttonIcon={PaletteOutlined}
                             dropdownList={colors.map(c => (
-                                <div onClick={() => this.handleColorChange(c.name)} className={classes.selectItem}>
+                                <div onClick={() => this.handleColorChange(c.name)}>
                                     {c.name}
                                 </div>
                             ))}
                         />
                         <CustomDropdown
-                            noLiPadding
-                            buttonText="Method"
+                            buttonText={`Method: ${this.state.method.name}`}
                             buttonProps={{
                                 color: "transparent"
                             }}
                             buttonIcon={TextureOutlined}
                             dropdownList={methods.map(c => (
-                                <div onClick={() => this.handleMethodChange(c.name)} className={classes.selectItem}>
+                                <div onClick={() => this.handleMethodChange(c.name)}>
                                     {c.name}
                                 </div>
                             ))}
@@ -147,9 +145,6 @@ const inversionStyle = {
     },
     rightContainer: {
         padding: "15px",
-    },
-    selectItem: {
-        padding: "10px",
     },
 };
 
