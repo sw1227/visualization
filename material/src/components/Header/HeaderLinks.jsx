@@ -26,6 +26,11 @@ function HeaderLinks({ ...props }) {
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
+        <Link to="/" >
+          <Button color="transparent" style={{color: window.innerWidth > 959 ? "#fff" : "rgb(60, 72, 88)"}}>HOME</Button>
+        </Link>
+      </ListItem>
+      <ListItem className={classes.listItem}>
         <CustomDropdown
           noLiPadding
           buttonText="Categories"
