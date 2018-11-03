@@ -27,7 +27,7 @@ const Frame = props => {
 const frameStyle = {
     container: {
         marginTop: "70px",
-        padding: "10px",
+        padding: "0px",
     },
 };
 
