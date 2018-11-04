@@ -5,6 +5,7 @@ import CalabiYau from "views/CalabiYau.jsx";
 import Riemann from "views/Riemann.jsx";
 import Hata from "views/Hata.jsx";
 import Complex from "views/Complex.jsx";
+import Ca from "views/Ca.jsx";
 
 var indexRoutes = [
   { path: "/harmonograph", name: "Harmonograph", component: Harmonograph },
@@ -13,6 +14,7 @@ var indexRoutes = [
   { path: "/riemann", name: "Riemann", component: Riemann },
   { path: "/hata", name: "Hata", component: Hata },
   { path: "/complex", name: "Complex", component: Complex },
+  { path: "/ca", name: "Ca", component: Ca },
   { path: "/", name: "IndexPage", component: IndexPage },
 ];
 

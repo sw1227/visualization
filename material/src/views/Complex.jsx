@@ -81,7 +81,7 @@ class Complex extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <Frame title="Circle Inversion">
+            <Frame title="Complex Function - Domain Coloring / Conformal Transformation">
                 <GridContainer>
                     <GridItem sm={8} xs={12}>
                         {/* left */}
