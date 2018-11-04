@@ -9,6 +9,7 @@ import Ca from "views/Ca.jsx";
 import GameOfLife from "views/GameOfLife.jsx";
 import Lsystem from "views/Lsystem.jsx";
 import Quad from "views/Quad.jsx";
+import RoadDirection from "views/RoadDirection.jsx";
 
 var indexRoutes = [
   { path: "/harmonograph", name: "Harmonograph", component: Harmonograph },
@@ -21,6 +22,7 @@ var indexRoutes = [
   { path: "/lifegame", name: "GameOfLife", component: GameOfLife },
   { path: "/lsystem", name: "Lsystem", component: Lsystem },
   { path: "/quad", name: "Quad", component: Quad },
+  { path: "/road", name: "RoadDirection", component: RoadDirection },
   { path: "/", name: "IndexPage", component: IndexPage },
 ];
 

@@ -49,7 +49,7 @@ function fetchTile(coord) {
             .then(response => response.text())
             .then(text => text.split("\n"))
             .then(rows => rows.slice(0, rows.length - 1)) // Last row: empty
-            .then(rows => rows.map(r => r.split(",").map(d => d == "e" ? 0 : parseFloat(d)))) // e: sea
+            .then(rows => rows.map(r => r.split(",").map(d => d === "e" ? 0 : parseFloat(d)))) // e: sea
             .then(data => resolve(data))
             .catch(error => console.log(error));
     });
@@ -93,7 +93,7 @@ class QuadComponent extends React.Component {
         // Split the Quad with highest score
         d3.range(this.state.splitCount).forEach(() => {
             const highest = quads.pop();
-            if (highest.height == 1 || highest.width == 1) {
+            if (highest.height === 1 || highest.width === 1) {
                 indivisibles.push(highest);
             } else {
                 quads = quads.concat(highest.split()).sort((a, b) => a.score > b.score ? 1 : -1);

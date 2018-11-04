@@ -39,3 +39,16 @@ export const colorMethods = [
     {"name": "CheckerBoard", "function": checkerBoard},
     {"name": "Argument", "function": normalizedArg},
 ];
+
+
+// Get tile coordinates from latitude, longitude and zoom
+export function getTileCoords(lat, lon, zoom) {
+    const xTile = parseInt(Math.floor((lon + 180) / 360 * (1 << zoom)));
+    const yTile = parseInt(Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * (1 << zoom)));
+    return { "z": zoom, "x": xTile, "y": yTile }
+}
+
+// Direction of vector p2-p1
+export function direction(p1, p2) {
+    return Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
+}
