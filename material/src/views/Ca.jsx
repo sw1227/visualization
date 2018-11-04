@@ -125,7 +125,7 @@ class Ca extends React.Component {
             <Frame title="1-D Cellular Automaton">
                 <GridContainer>
                     <GridItem sm={8} xs={12}>
-                        {/* left: svg */}
+                        {/* left */}
                         <Card className={classes.card}>
                             <svg ref="svg" width={squareSize} height={squareSize}></svg>
                         </Card>

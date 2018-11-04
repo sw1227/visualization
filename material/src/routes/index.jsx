@@ -6,6 +6,7 @@ import Riemann from "views/Riemann.jsx";
 import Hata from "views/Hata.jsx";
 import Complex from "views/Complex.jsx";
 import Ca from "views/Ca.jsx";
+import GameOfLife from "views/GameOfLife.jsx";
 
 var indexRoutes = [
   { path: "/harmonograph", name: "Harmonograph", component: Harmonograph },
@@ -15,6 +16,7 @@ var indexRoutes = [
   { path: "/hata", name: "Hata", component: Hata },
   { path: "/complex", name: "Complex", component: Complex },
   { path: "/ca", name: "Ca", component: Ca },
+  { path: "/lifegame", name: "GameOfLife", component: GameOfLife },
   { path: "/", name: "IndexPage", component: IndexPage },
 ];
 
