@@ -1,40 +1,30 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import * as d3 from 'd3';
-
-const styles = {
-    // fit to parent
-    canvas: {
-        width : "100%",
-        height: "100%",
-    },
-};
+import React from "react";
+import * as d3 from "d3";
 
 
-class Imshow extends React.Component {
-
+export default class Imshow extends React.Component {
     componentDidMount() {
-        this.imshow(this.props.data, this.props.interpolate);
+        this.imshow();
     }
 
     componentDidUpdate(prevProps) {
-        if ( (this.props.data !== prevProps.data) ||
-             (this.props.interpolate !== prevProps.interpolate) ) {
-            this.imshow(this.props.data, this.props.interpolate);
+        if ( (this.props.data!==prevProps.data) || (this.props.interpolate!==prevProps.interpolate) ) {
+            this.imshow();
         }
     }
 
-    imshow(array, interpolate) {
-        const canvas = d3.select(this.refs.canvas);
+    imshow = () => {
+        const canvas = this.refs.canvas;
 
-        const resolution = Math.sqrt(array.length);
-        canvas.attr("width", resolution).attr("height", resolution);
+        // Square only
+        const resolution = Math.sqrt(this.props.data.length);
+        ["width", "height"].forEach(a => canvas.setAttribute(a, resolution));
 
-        const context = canvas.node().getContext("2d");
+        const context = canvas.getContext("2d");
         const imageData = context.createImageData(resolution, resolution);
 
-        array.forEach((d, i) => {
-            let color = isNaN(d) ? {"r": 0, "g": 0, "b": 0} : d3.color(interpolate(d));
+        this.props.data.forEach((d, i) => {
+            let color = isNaN(d) ? {r: 0, g: 0, b: 0} : d3.color(this.props.interpolate(d));
             imageData.data[i*4  ] = color.r;
             imageData.data[i*4+1] = color.g;
             imageData.data[i*4+2] = color.b;
@@ -44,11 +34,8 @@ class Imshow extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
         return (
-              <canvas className={classes.canvas}  ref="canvas"></canvas>
+            <canvas style={{ width: "100%", height: "100%" }} ref="canvas" />
         );
     }
 }
-
-export default withStyles(styles)(Imshow);
