@@ -52,3 +52,17 @@ export function getTileCoords(lat, lon, zoom) {
 export function direction(p1, p2) {
     return Math.atan2(p2[1] - p1[1], p2[0] - p1[0]);
 }
+
+
+// Fetch elevation tile from Japanese government and resolve
+export function fetchTile(coord) {
+    return new Promise(resolve => {
+        fetch(`https://cyberjapandata.gsi.go.jp/xyz/dem/${coord.z}/${coord.x}/${coord.y}.txt`)
+            .then(response => response.text())
+            .then(text => text.split("\n"))
+            .then(rows => rows.slice(0, rows.length - 1)) // Last row: empty
+            .then(rows => rows.map(r => r.split(",").map(d => d === "e" ? 0 : parseFloat(d)))) // e: sea
+            .then(data => resolve(data))
+            .catch(error => {throw error});
+    });
+}

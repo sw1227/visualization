@@ -7,7 +7,8 @@ import * as math from "mathjs";
 import * as THREE from "three";
 import * as d3 from "d3";
 import Frame from "./common/Frame.jsx";
-import { World, createStats} from "./common/threeUtil";
+import { createStats} from "./common/threeUtil";
+import World from "./common/world.js"
 
 
  // Monkey patch to the world

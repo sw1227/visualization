@@ -6,7 +6,9 @@ import GridItem from "components/Grid/GridItem.jsx";
 import * as d3 from "d3";
 import Frame from "./common/Frame.jsx";
 import Imshow from "./common/Imshow.jsx";
-import { World, createStats} from "./common/threeUtil";
+import { createStats} from "./common/threeUtil";
+import World from "./common/world.js"
+import { fetchTile } from "./common/util.js";
 
 // Elevation version of "https://beta.observablehq.com/@mbostock/quadtree-art"
 
@@ -40,19 +42,6 @@ const Quad = function (tile, x, y, areaParam) {
                 this.x + dx, this.y + dy, this.areaParam)
         ];
     }
-}
-
-// Fetch elevation tile from Japanese government and resolve
-function fetchTile(coord) {
-    return new Promise(resolve => {
-        fetch(`https://cyberjapandata.gsi.go.jp/xyz/dem/${coord.z}/${coord.x}/${coord.y}.txt`)
-            .then(response => response.text())
-            .then(text => text.split("\n"))
-            .then(rows => rows.slice(0, rows.length - 1)) // Last row: empty
-            .then(rows => rows.map(r => r.split(",").map(d => d === "e" ? 0 : parseFloat(d)))) // e: sea
-            .then(data => resolve(data))
-            .catch(error => console.log(error));
-    });
 }
 
 
