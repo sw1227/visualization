@@ -2,7 +2,7 @@ import * as THREE from "three";
 import * as TrackballControls from "three-trackballcontrols";
 
 
-// World class: hold the essential components of 3D world
+// World class: hold essential components of 3D world
 export default class World {
     constructor(elementId, size, antialias=true, color="#ffffff") {
         // Initialize the World
@@ -169,6 +169,29 @@ export default class World {
         });
         mesh.geometry.verticesNeedUpdate = true;
         mesh.geometry.computeFaceNormals();
+    }
+
+    // Add wireframe
+    addWireframe = (name, size, shape, color=0x2260ff) => {
+        // Geometry
+        const wireframeGeometry = new THREE.PlaneGeometry(
+            size.width, size.height, // width, height
+            shape[0], shape[1] // Segments
+        );
+         // Material
+        const wireframeMaterial = new THREE.MeshBasicMaterial({
+            color: color,
+            wireframe: true,
+            transparent: true,
+            depthWrite: false,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending
+        });
+
+        // Mesh
+        const wireframe = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
+        wireframe.name = name;
+        this.scene.add(wireframe);
     }
 
     // Remove all objects
