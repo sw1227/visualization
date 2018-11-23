@@ -17,6 +17,7 @@ const indexRoutes = [
     { path: "/road", name: "RoadDirection" },
     { path: "/piano", name: "Piano" },
     { path: "/nabewari-3d", name: "Nabewari3D" },
+    { path: "/torus", name: "Torus" },
 ];
 
 class IndexPage extends React.Component {

@@ -12,6 +12,7 @@ import Quad from "views/Quad.jsx";
 import RoadDirection from "views/RoadDirection.jsx";
 import Piano from "views/Piano.jsx";
 import Nabewari3D from "views/Nabewari3D.jsx";
+import Torus from "views/Torus.jsx";
 
 var indexRoutes = [
   { path: "/harmonograph", name: "Harmonograph", component: Harmonograph },
@@ -27,6 +28,7 @@ var indexRoutes = [
   { path: "/road", name: "RoadDirection", component: RoadDirection },
   { path: "/piano", name: "Piano", component: Piano },
   { path: "/nabewari-3d", name: "Nabewari3D", component: Nabewari3D },
+  { path: "/torus", name: "Torus", component: Torus },
   { path: "/", name: "IndexPage", component: IndexPage },
 ];
 
